@@ -24,10 +24,12 @@ final class WishStoringViewController: UIViewController, UITableViewDelegate {
         
     }
     
+    // MARK: Fields
     private let table: UITableView = UITableView(frame: .zero)
     private var wishArray: [String] = []
     private let defaults = UserDefaults.standard
     
+    // MARK: Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
@@ -35,6 +37,7 @@ final class WishStoringViewController: UIViewController, UITableViewDelegate {
         configureTable()
     }
     
+    // MARK: Private methods
     private func loadWishes() {
         if let savedWishes = defaults.array(forKey: Constants.keyForSave) as? [String] {
             wishArray = savedWishes
