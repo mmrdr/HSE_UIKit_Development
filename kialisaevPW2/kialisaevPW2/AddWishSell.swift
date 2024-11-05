@@ -14,11 +14,11 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
     private let wishText: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.layer.borderColor = UIColor.lightGray.cgColor
+        textView.layer.borderColor = UIColor.yellow.cgColor
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 10
         textView.text = "Write your wish here..."
-        textView.textColor = .lightGray
+        textView.textColor = .systemOrange
         return textView
     }()
     
@@ -36,6 +36,8 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String? ) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .systemPink
+        selectionStyle = .none
         configureUI()
         wishText.delegate = self
     }
@@ -51,6 +53,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
     
     private func configureWishText() {
         contentView.addSubview(wishText)
+        wishText.backgroundColor = .systemPink
         wishText.pinTop(contentView.topAnchor, 10)
         wishText.pinLeft(contentView.leadingAnchor, 10)
         wishText.pinRight(contentView.trailingAnchor, 10)
@@ -68,16 +71,16 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .lightGray {
+        if textView.textColor == .systemOrange {
             textView.text = nil
-            textView.textColor = .black
+            textView.textColor = .systemYellow
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "Write your wish here..."
-            textView.textColor = .lightGray
+            textView.textColor = .systemOrange
         }
     }
     
@@ -85,7 +88,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         let wishTextView = wishText.text
         if let text = wishTextView, !text.isEmpty, text != "Write your wish here..." {
             addWish?(text)
-            wishText.textColor = .lightGray
+            wishText.textColor = .systemOrange
             wishText.text = "Write your wish here..."
             wishText.resignFirstResponder()
         }
