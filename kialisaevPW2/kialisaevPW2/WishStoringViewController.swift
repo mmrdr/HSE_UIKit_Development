@@ -12,9 +12,11 @@ final class WishStoringViewController: UIViewController {
     enum Constants {
         static let tableCornerRadius: CGFloat = 20
         static let tableOffset: CGFloat = 40
+        static let numberOfSections: Int = 2
     }
     
     private let table: UITableView = UITableView(frame: .zero)
+    private var wishArray: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,16 +33,44 @@ final class WishStoringViewController: UIViewController {
         
         table.translatesAutoresizingMaskIntoConstraints = false
         table.pin(view, Constants.tableOffset)
+        
+        table.register(WrittenWishCell.self, forCellReuseIdentifier: WrittenWishCell.reuseId)
+        table.register(AddWishCell.self, forCellReuseIdentifier: AddWishCell.reuseId)
     }
 }
 
 // MARK: - UITableViewDataSource
 extension WishStoringViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Constants.numberOfSections
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return wishArray.count
+        default:
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        switch indexPath.section {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: AddWishCell.reuseId, for: indexPath) as! AddWishCell
+            cell.addWish = { [weak self] wish in 
+                self?.wishArray.append(wish)
+                self?.table.reloadData()}
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: WrittenWishCell.reuseId, for: indexPath)
+            cell.textLabel?.text = wishArray[indexPath.row]
+            return cell
+        default:
+            return UITableViewCell()
+        }
     }
 }
