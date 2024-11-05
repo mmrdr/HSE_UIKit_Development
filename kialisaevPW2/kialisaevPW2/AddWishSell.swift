@@ -11,6 +11,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
     
     static let reuseId: String = "AddWishCell"
     
+    // MARK: Enum(Constants)
     enum Constants {
         static let textBorderWidth: CGFloat = 1
         static let textCornerRadius: CGFloat = 10
@@ -28,6 +29,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         static let addWishButtonWidth: CGFloat = 110
     }
     
+    // MARK: Fields
     private let wishText: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,6 +53,7 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
     
     var addWish: ((String) -> Void)?
     
+    // MARK: Lifecycle methods
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String? ) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .systemPink
@@ -63,6 +66,22 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Public methods
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == .systemOrange {
+            textView.text = nil
+            textView.textColor = .systemYellow
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = Constants.text
+            textView.textColor = .systemOrange
+        }
+    }
+    
+    // MARK: Private methods
     private func configureUI() {
         configureWishText()
         configureAddWishButton()
@@ -85,20 +104,6 @@ class AddWishCell: UITableViewCell, UITextViewDelegate {
         addWishButton.setHeight(Constants.addWishButtonHeight)
         addWishButton.setWidth(Constants.addWishButtonWidth)
         addWishButton.addTarget(self, action: #selector(addWishButtonPressed(_:)), for: .touchUpInside)
-    }
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .systemOrange {
-            textView.text = nil
-            textView.textColor = .systemYellow
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = Constants.text
-            textView.textColor = .systemOrange
-        }
     }
     
     @objc private func addWishButtonPressed(_ sender: UIButton) {
