@@ -17,11 +17,23 @@ final class WishStoringViewController: UIViewController {
     
     private let table: UITableView = UITableView(frame: .zero)
     private var wishArray: [String] = []
+    private let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
+        loadWishes()
         configureTable()
+    }
+    
+    private func loadWishes() {
+        if let savedWishes = defaults.array(forKey: "savedWishes") as? [String] {
+            wishArray = savedWishes
+        }
+    }
+    
+    private func saveWishes() {
+        defaults.set(wishArray, forKey: "savedWishes")
     }
     
     private func configureTable() {
@@ -63,6 +75,7 @@ extension WishStoringViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: AddWishCell.reuseId, for: indexPath) as! AddWishCell
             cell.addWish = { [weak self] wish in 
                 self?.wishArray.append(wish)
+                self?.saveWishes()
                 self?.table.reloadData()}
             return cell
         case 1:
