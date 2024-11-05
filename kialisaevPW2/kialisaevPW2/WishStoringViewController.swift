@@ -6,7 +6,7 @@
 //
 
 import UIKit
-final class WishStoringViewController: UIViewController {
+final class WishStoringViewController: UIViewController, UITableViewDelegate {
     
     // MARK: Enum(Constants)
     enum Constants {
@@ -40,6 +40,7 @@ final class WishStoringViewController: UIViewController {
         view.addSubview(table)
         table.backgroundColor = .systemPink
         table.dataSource = self
+        table.delegate = self
         table.separatorStyle = .none
         table.layer.cornerRadius = Constants.tableCornerRadius
         
@@ -84,6 +85,14 @@ extension WishStoringViewController: UITableViewDataSource {
             return cell
         default:
             return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete && indexPath.section == 1 {
+            wishArray.remove(at: indexPath.row)
+            saveWishes()
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
 }
