@@ -10,9 +10,18 @@ final class WishStoringViewController: UIViewController, UITableViewDelegate {
     
     // MARK: Enum(Constants)
     enum Constants {
+        static let keyForSave: String = "savedWishes"
+        
+        static let alertTitle: String = "Edit Wish"
+        static let alertMessage: String = "Update your wish"
+        static let alertSave: String = "Save"
+        static let alertCancel: String = "Cancel"
+        
         static let tableCornerRadius: CGFloat = 20
         static let tableOffset: CGFloat = 40
+        
         static let numberOfSections: Int = 2
+        
     }
     
     private let table: UITableView = UITableView(frame: .zero)
@@ -27,13 +36,13 @@ final class WishStoringViewController: UIViewController, UITableViewDelegate {
     }
     
     private func loadWishes() {
-        if let savedWishes = defaults.array(forKey: "savedWishes") as? [String] {
+        if let savedWishes = defaults.array(forKey: Constants.keyForSave) as? [String] {
             wishArray = savedWishes
         }
     }
     
     private func saveWishes() {
-        defaults.set(wishArray, forKey: "savedWishes")
+        defaults.set(wishArray, forKey: Constants.keyForSave)
     }
     
     private func configureTable() {
@@ -101,19 +110,19 @@ extension WishStoringViewController: UITableViewDataSource {
         guard indexPath.section == 1 else { return }
         let wishToEdit = wishArray[indexPath.row]
         
-        let alert = UIAlertController(title: "Edit Wish", message: "Update your wish", preferredStyle: .alert)
+        let alert = UIAlertController(title: Constants.alertTitle, message: Constants.alertMessage, preferredStyle: .alert)
         alert.addTextField { textField in
             textField.text = wishToEdit
         }
         
-        let saveAction = UIAlertAction(title: "Save", style: .default) { [weak self] _ in
+        let saveAction = UIAlertAction(title: Constants.alertSave, style: .default) { [weak self] _ in
             guard let newText = alert.textFields?.first?.text, !newText.isEmpty else { return }
             self?.wishArray[indexPath.row] = newText
             self?.saveWishes()
             self?.table.reloadRows(at: [indexPath], with: .automatic)
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Constants.alertCancel, style: .cancel, handler: nil)
         
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
