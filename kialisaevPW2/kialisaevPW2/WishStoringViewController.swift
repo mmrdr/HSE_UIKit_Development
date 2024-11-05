@@ -43,6 +43,7 @@ final class WishStoringViewController: UIViewController, UITableViewDelegate {
         table.delegate = self
         table.separatorStyle = .none
         table.layer.cornerRadius = Constants.tableCornerRadius
+        table.rowHeight = UITableView.automaticDimension
         
         table.translatesAutoresizingMaskIntoConstraints = false
         table.pin(view, Constants.tableOffset)
@@ -80,8 +81,8 @@ extension WishStoringViewController: UITableViewDataSource {
                 self?.table.reloadData()}
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: WrittenWishCell.reuseId, for: indexPath)
-            cell.textLabel?.text = wishArray[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: WrittenWishCell.reuseId, for: indexPath) as! WrittenWishCell
+            cell.configure(with: wishArray[indexPath.row])
             return cell
         default:
             return UITableViewCell()
@@ -94,5 +95,29 @@ extension WishStoringViewController: UITableViewDataSource {
             saveWishes()
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == 1 else { return }
+        let wishToEdit = wishArray[indexPath.row]
+        
+        let alert = UIAlertController(title: "Edit Wish", message: "Update your wish", preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.text = wishToEdit
+        }
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) { [weak self] _ in
+            guard let newText = alert.textFields?.first?.text, !newText.isEmpty else { return }
+            self?.wishArray[indexPath.row] = newText
+            self?.saveWishes()
+            self?.table.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
     }
 }
