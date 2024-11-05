@@ -73,22 +73,14 @@ extension UIView {
         pinCentreY(otherView)
     }
     
+    func setHeight(_ const: Double) {
+        translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: const).isActive = true
+    }
+    
     func setWidth(_ const: Double) {
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalToConstant: const).isActive = true
-    }
-    
-    func setHeight(_ const: Double) -> NSLayoutConstraint {
-        translatesAutoresizingMaskIntoConstraints = false
-        var constraint = heightAnchor.constraint(equalToConstant: const)
-        constraint.isActive = true
-        return constraint
-    }
-    
-    func setSize(_ height: Double, _ width: Double) {
-        translatesAutoresizingMaskIntoConstraints = false
-        setHeight(height)
-        setWidth(width)
     }
     
     func pinWidth(_ otherView: UIView, _ mult: Double) {
@@ -109,6 +101,11 @@ extension UIView {
     func pinHeight(_ dimension: NSLayoutDimension, _ mult: Double) {
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalTo: dimension, multiplier: mult).isActive = true
+    }
+    
+    func pinHorizontal(_ otherView: UIView, _ const: Double = 0) {
+        pinLeft(otherView, const)
+        pinRight(otherView, const)
     }
 }
 
