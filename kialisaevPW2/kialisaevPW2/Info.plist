@@ -4,8 +4,6 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>BubblezGraffitiItalic.ttf</string>
-		<string>BubblezGraffiti.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
