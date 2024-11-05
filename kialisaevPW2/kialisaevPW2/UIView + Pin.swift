@@ -107,5 +107,15 @@ extension UIView {
         pinLeft(otherView, const)
         pinRight(otherView, const)
     }
+    
+    func pinVertical(_ otherView: UIView, _ const: Double = 0) {
+        pinTop(otherView, const)
+        pinBottom(otherView, const)
+    }
+    
+    func pin(_ otherView: UIView, _ const: Double = 0) {
+        pinHorizontal(otherView, const)
+        pinVertical(otherView, const)
+    }
 }
 
