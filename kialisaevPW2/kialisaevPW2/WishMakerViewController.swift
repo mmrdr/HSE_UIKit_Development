@@ -13,26 +13,40 @@ final class WishMakerViewController : UIViewController {
     enum Constants {
         static let sliderMin: Double = 0
         static let sliderMax: Double = 1
+        
         static let red: String = "Red"
         static let green: String = "Green"
         static let blue: String = "Blue"
+        
         static let titleFontSize: CGFloat = 30
         static let titleTop: CGFloat = 30
+        
         static let descriptionFontSize: CGFloat = 16
         static let descriptionLeading: CGFloat = 10
         static let descriptionTrailing: CGFloat = 10
         static let descriptionTop: CGFloat = 20
+        
+        static let addWishButtonHeight: CGFloat = 50
+        static let addWishButtonWidth: CGFloat = 30
+        static let addWishButtonBottom: CGFloat = 10
+        static let addWishButtonHorizontal: CGFloat = 20
+        static let addWishButtonTitle: String = "Add wish"
+        static let addWishButtonCornerRadius: CGFloat = 20
+        
         static let stackRadius: CGFloat = 20
-        static let stackBottom: CGFloat = 40
+        static let stackBottom: CGFloat = 10
         static let stackLeading: CGFloat = 20
+        
         static let switchButtonTop: CGFloat = 30
         static let switchButtonTrailing: CGFloat = 30
+        
         static let animationTime: CGFloat = 0.5
     }
     
     // MARK: Fields
     let switchButton = UISwitch()
     let greetingText = UILabel()
+    private let addWishButton: UIButton = UIButton(type: .system)
     
     private var sliders: [CustomSlider] = [
         CustomSlider(title: Constants.red, min: Constants.sliderMin, max: Constants.sliderMax),
@@ -52,6 +66,7 @@ final class WishMakerViewController : UIViewController {
         configureTitle()
         configureSwitchButton(switchButton)
         configureDescription()
+        configureAddWishButton()
         configureSliders()
     }
     
@@ -86,6 +101,20 @@ final class WishMakerViewController : UIViewController {
         description.pinTop(view.subviews[0].bottomAnchor, Constants.descriptionTop)
     }
     
+    private func configureAddWishButton() {
+        view.addSubview(addWishButton)
+        addWishButton.setHeight(Constants.addWishButtonHeight)
+        addWishButton.pinBottom(view.safeAreaLayoutGuide.bottomAnchor, Constants.addWishButtonBottom)
+        addWishButton.pinHorizontal(view, Constants.addWishButtonHorizontal)
+        
+        addWishButton.backgroundColor = .white
+        addWishButton.setTitleColor(.systemPink, for: .normal)
+        addWishButton.setTitle(Constants.addWishButtonTitle, for: .normal)
+        
+        addWishButton.layer.cornerRadius = Constants.addWishButtonCornerRadius
+        addWishButton.addTarget(self, action: #selector(addWishButtonPressed(_:)), for: .touchUpInside)
+    }
+    
     private func configureSliders() {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -100,7 +129,7 @@ final class WishMakerViewController : UIViewController {
         }
         stack.pinCentreX(view.centerXAnchor)
         stack.pinLeft(view.safeAreaLayoutGuide.leadingAnchor, Constants.stackLeading)
-        stack.pinBottom(view.bottomAnchor, Constants.stackBottom)
+        stack.pinBottom(addWishButton.topAnchor, Constants.stackBottom)
     }
     
     private func configureSwitchButton(_ switchButton: UISwitch) {
@@ -129,5 +158,9 @@ final class WishMakerViewController : UIViewController {
         } else {
             self.view.subviews[3].isHidden = false
         }
+    }
+    
+    @objc private func addWishButtonPressed(_ sender: UISwitch) {
+        
     }
 }
