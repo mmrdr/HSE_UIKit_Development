@@ -10,6 +10,7 @@ final class WrittenWishCell: UITableViewCell {
     
     static let reuseId: String = "WrittenWishCell"
     
+    // MARK: Enum(Constants)
     private enum Constants {
         static let wrapColor: UIColor = .white
         static let wrapRadius: CGFloat = 16
@@ -19,6 +20,7 @@ final class WrittenWishCell: UITableViewCell {
         static let ofSize: CGFloat = 16
     }
         
+    // MARK: Fields
     private let wishLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -46,10 +48,12 @@ final class WrittenWishCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Public methods
     func configure(with wish: String) {
         wishLabel.text = wish
     }
     
+    // MARK: Private methods
     private func configureUI() {
         selectionStyle = .none
         backgroundColor = .clear
