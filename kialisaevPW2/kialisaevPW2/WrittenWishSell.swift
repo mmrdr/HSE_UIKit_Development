@@ -18,7 +18,21 @@ final class WrittenWishCell: UITableViewCell {
         static let wishLabelOffset: CGFloat = 20
     }
         
-    private let wishLabel: UILabel = UILabel()
+    private let wishLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let wrap: UIView = {
+        let view = UIView()
+        view.backgroundColor = Constants.wrapColor
+        view.layer.cornerRadius = Constants.wrapRadius
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -38,13 +52,16 @@ final class WrittenWishCell: UITableViewCell {
     private func configureUI() {
         selectionStyle = .none
         backgroundColor = .clear
-        let wrap: UIView = UIView()
-        addSubview(wrap)
-        wrap.backgroundColor = Constants.wrapColor
-        wrap.layer.cornerRadius = Constants.wrapRadius
-        wrap.pinVertical(self, Constants.wrapOffsetV)
-        wrap.pinHorizontal(self, Constants.wrapOffsetH)
+        contentView.addSubview(wrap)
         wrap.addSubview(wishLabel)
-        wishLabel.pin(wrap, Constants.wishLabelOffset)
+        wrap.pinTop(contentView.topAnchor, Constants.wrapOffsetV)
+        wrap.pinBottom(contentView.bottomAnchor, Constants.wrapOffsetV)
+        wrap.pinLeft(contentView.leadingAnchor, Constants.wrapOffsetH)
+        wrap.pinRight(contentView.trailingAnchor, Constants.wrapOffsetH)
+        
+        wishLabel.pinTop(contentView.topAnchor, Constants.wishLabelOffset)
+        wishLabel.pinBottom(contentView.bottomAnchor, Constants.wishLabelOffset)
+        wishLabel.pinLeft(contentView.leadingAnchor, Constants.wishLabelOffset)
+        wishLabel.pinRight(contentView.trailingAnchor, Constants.wishLabelOffset)
     }
 }
