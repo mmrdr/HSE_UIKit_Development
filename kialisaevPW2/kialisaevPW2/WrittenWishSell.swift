@@ -16,12 +16,13 @@ final class WrittenWishCell: UITableViewCell {
         static let wrapOffsetV: CGFloat = 10
         static let wrapOffsetH: CGFloat = 10
         static let wishLabelOffset: CGFloat = 20
+        static let ofSize: CGFloat = 16
     }
         
     private let wishLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: Constants.ofSize)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
