@@ -44,8 +44,8 @@ final class WishMakerViewController : UIViewController {
     }
     
     // MARK: Fields
-    let switchButton = UISwitch()
-    let greetingText = UILabel()
+    private let switchButton = UISwitch()
+    private let greetingText = UILabel()
     private let addWishButton: UIButton = UIButton(type: .system)
     
     private var sliders: [CustomSlider] = [
@@ -58,6 +58,10 @@ final class WishMakerViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     
     // MARK: Private methods
@@ -88,8 +92,11 @@ final class WishMakerViewController : UIViewController {
     private func configureDescription() {
         let description = UILabel()
         description.text = """
-            This is a description of the PW2 homework. In the process, I learned how to: \
+            This is a description of the PW2 and PW3 homework. In the process, I learned how to: \
             delete the Storyboard (I will never use it again), create my own custom sliders and customize them.
+            Also, I learned how to do beauty wish maker. If u press "Add Wish" button you can test it.
+            If you want to deleat wish - drag with to the left edge.
+            If you want to edit wish - click on it.
             """
         description.font = UIFont.systemFont(ofSize: Constants.descriptionFontSize)
         description.numberOfLines = 0;
@@ -134,6 +141,7 @@ final class WishMakerViewController : UIViewController {
     
     private func configureSwitchButton(_ switchButton: UISwitch) {
         view.addSubview(switchButton)
+        switchButton.isOn = true
         switchButton.pinTop(view.safeAreaLayoutGuide.topAnchor, Constants.switchButtonTop)
         switchButton.pinRight(view.safeAreaLayoutGuide.trailingAnchor, Constants.switchButtonTrailing)
         switchButton.addTarget(self, action: #selector(switchButtonPressed(_:)), for: .valueChanged)
@@ -153,10 +161,12 @@ final class WishMakerViewController : UIViewController {
     @objc private func switchButtonPressed(_ sender: UISwitch) {
         if sender.isOn {
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.animationTime) {
-                self.view.subviews[3].isHidden = true
+                self.view.subviews[3].isHidden = false
+                self.view.subviews[4].isHidden = false
             }
         } else {
-            self.view.subviews[3].isHidden = false
+            self.view.subviews[3].isHidden = true
+            self.view.subviews[4].isHidden = true
         }
     }
     
