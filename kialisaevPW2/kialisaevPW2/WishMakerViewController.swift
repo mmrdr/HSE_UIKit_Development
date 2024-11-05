@@ -95,7 +95,7 @@ final class WishMakerViewController : UIViewController {
             This is a description of the PW2 and PW3 homework. In the process, I learned how to: \
             delete the Storyboard (I will never use it again), create my own custom sliders and customize them.
             Also, I learned how to do beauty wish maker. If u press "Add Wish" button you can test it.
-            If you want to deleat wish - drag with to the left edge.
+            If you want to deleat wish - drag it to the left edge.
             If you want to edit wish - click on it.
             """
         description.font = UIFont.systemFont(ofSize: Constants.descriptionFontSize)
