@@ -28,10 +28,21 @@ final class WishMakerViewController : UIViewController {
         
         static let addWishButtonHeight: CGFloat = 50
         static let addWishButtonWidth: CGFloat = 30
-        static let addWishButtonBottom: CGFloat = 10
+        static let addWishButtonBottom: CGFloat = 60
         static let addWishButtonHorizontal: CGFloat = 20
         static let addWishButtonTitle: String = "Add wish"
         static let addWishButtonCornerRadius: CGFloat = 20
+        
+        // HW 4
+        static let scheduleWishesButtonHeight: CGFloat = 50
+        static let scheduleWishesButtonWidth: CGFloat = 30
+        static let scheduleWishesButtonBottom: CGFloat = 10
+        static let scheduleWishesButtonHorizontal: CGFloat = 20
+        static let scheduleWishesButtonTitle: String = "Schedule wish granting"
+        static let scheduleWishesButtonCornerRadius: CGFloat = 20
+        
+        // HW 4
+        static let actionStackSpacing: CGFloat = 15
         
         static let stackRadius: CGFloat = 20
         static let stackBottom: CGFloat = 10
@@ -46,7 +57,9 @@ final class WishMakerViewController : UIViewController {
     // MARK: Fields
     private let switchButton = UISwitch()
     private let greetingText = UILabel()
-    private let addWishButton: UIButton = UIButton(type: .system)
+    private var addWishButton: UIButton = UIButton(type: .system)
+    private var scheduleWishesButton: UIButton = UIButton(type: .system) // HW4
+    private let actionStack: UIStackView = UIStackView() // HW4
     
     private var sliders: [CustomSlider] = [
         CustomSlider(title: Constants.red, min: Constants.sliderMin, max: Constants.sliderMax),
@@ -68,9 +81,9 @@ final class WishMakerViewController : UIViewController {
     private func configureUI() {
         view.backgroundColor = UIColor.random()
         configureTitle()
-        configureSwitchButton(switchButton)
+        configureSwitchButton()
         configureDescription()
-        configureAddWishButton()
+        configureActionStack() // HW4
         configureSliders()
     }
     
@@ -121,6 +134,20 @@ final class WishMakerViewController : UIViewController {
         addWishButton.layer.cornerRadius = Constants.addWishButtonCornerRadius
         addWishButton.addTarget(self, action: #selector(addWishButtonPressed(_:)), for: .touchUpInside)
     }
+    // HW4 method
+    private func configureScheduleWishesButton() {
+        view.addSubview(scheduleWishesButton)
+        scheduleWishesButton.setHeight(Constants.scheduleWishesButtonHeight)
+        scheduleWishesButton.pinTop(addWishButton.bottomAnchor, Constants.scheduleWishesButtonBottom)
+        scheduleWishesButton.pinHorizontal(view, Constants.scheduleWishesButtonHorizontal)
+        
+        scheduleWishesButton.backgroundColor = .white
+        scheduleWishesButton.setTitleColor(.systemPink, for: .normal)
+        scheduleWishesButton.setTitle(Constants.scheduleWishesButtonTitle, for: .normal)
+        
+        scheduleWishesButton.layer.cornerRadius = Constants.scheduleWishesButtonCornerRadius
+        scheduleWishesButton.addTarget(self, action: #selector(scheduleWishesButtonPressed(_:)), for: .touchUpInside)
+    }
     
     private func configureSliders() {
         let stack = UIStackView()
@@ -128,10 +155,11 @@ final class WishMakerViewController : UIViewController {
         view.addSubview(stack)
         stack.layer.cornerRadius = Constants.stackRadius
         stack.clipsToBounds = true
+        let array = [addWishButton, scheduleWishesButton]
         for slider in sliders {
             stack.addArrangedSubview(slider)
             slider.valueChanged = { [weak self] _ in
-                self?.updateBackgroundColor()
+                self?.updateBackgroundColor(array: array)
             }
         }
         stack.pinCentreX(view.centerXAnchor)
@@ -139,7 +167,7 @@ final class WishMakerViewController : UIViewController {
         stack.pinBottom(addWishButton.topAnchor, Constants.stackBottom)
     }
     
-    private func configureSwitchButton(_ switchButton: UISwitch) {
+    private func configureSwitchButton() {
         view.addSubview(switchButton)
         switchButton.isOn = true
         switchButton.pinTop(view.safeAreaLayoutGuide.topAnchor, Constants.switchButtonTop)
@@ -147,28 +175,56 @@ final class WishMakerViewController : UIViewController {
         switchButton.addTarget(self, action: #selector(switchButtonPressed(_:)), for: .valueChanged)
         
     }
+    // HW4 Method
+    private func configureActionStack() {
+        actionStack.axis = .vertical
+        view.addSubview(actionStack)
+        actionStack.spacing = Constants.actionStackSpacing
+        
+        for button in [addWishButton, scheduleWishesButton] {
+            actionStack.addArrangedSubview(button)
+        }
+        
+        configureAddWishButton()
+        configureScheduleWishesButton()
+        
+        actionStack.pinBottom(view, 80)
+        actionStack.pinHorizontal(view, Constants.stackLeading)
+    }
     
-    private func updateBackgroundColor() {
+    private func updateBackgroundColor(array : [UIButton]) {
         let redValue = CGFloat(sliders[0].slider.value)
         let greenValue = CGFloat(sliders[1].slider.value)
         let blueValue = CGFloat(sliders[2].slider.value)
         let newColor = UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: 1.0)
         UIView.animate(withDuration: Constants.animationTime) {
             self.view.backgroundColor = newColor
+            // Change color for buttons(HW4)
+            for el in array {
+                el.setTitleColor(newColor, for: .normal)
+            }
         }
     }
     
     @objc private func switchButtonPressed(_ sender: UISwitch) {
         if sender.isOn {
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.animationTime) {
-                self.view.subviews[4].isHidden = false
+                self.view.subviews[3].isHidden = false
             }
         } else {
-            self.view.subviews[4].isHidden = true
+            self.view.subviews[3].isHidden = true
         }
     }
     
-    @objc private func addWishButtonPressed(_ sender: UISwitch) {
+    @objc
+    private func addWishButtonPressed(_ sender: UIButton) {
         present(WishStoringViewController(), animated: true)
+    }
+    
+    // HW 4
+    @objc
+    private func scheduleWishesButtonPressed(_ sender: UIButton) {
+        let wishCalendarVS = WishCalendarViewController()
+        navigationController?.pushViewController(wishCalendarVS, animated: true)
     }
 }
