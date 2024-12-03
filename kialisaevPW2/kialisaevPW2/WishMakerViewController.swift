@@ -209,10 +209,10 @@ final class WishMakerViewController : UIViewController {
     @objc private func switchButtonPressed(_ sender: UISwitch) {
         if sender.isOn {
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.animationTime) {
-                self.view.subviews[3].isHidden = false
+                self.view.subviews[4].isHidden = false
             }
         } else {
-            self.view.subviews[3].isHidden = true
+            self.view.subviews[4].isHidden = true
         }
     }
     
