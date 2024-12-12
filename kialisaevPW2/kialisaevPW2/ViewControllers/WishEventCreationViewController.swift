@@ -37,6 +37,11 @@ class WishEventCreationViewController: UIViewController {
         static let saveButtonWidth: CGFloat = 200
         static let saveButtonBottom: CGFloat = 10
         static let saveButtonCornerRadius: CGFloat = 15
+        
+        static let chooseButtonTop: CGFloat = 10
+        
+        static let pickerCornerRadius: CGFloat = 15
+        static let pickerNumberOfComponents: Int = 1
     }
     
     //MARK: - Variables
@@ -49,21 +54,32 @@ class WishEventCreationViewController: UIViewController {
     private let endDatePicker = UIDatePicker()
     private let saveButton = UIButton(type: .system)
     private var stackView: UIStackView = UIStackView()
+    private let chooseButton: UIButton = UIButton(type: .system)
+    var pickerView: UIPickerView = UIPickerView()
+    var pickerData: [String] = WishStoringViewController.shared.getUserDefauts()
+    
+    var backgroundColor: UIColor?
     
     //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = backgroundColor ?? .white
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
         configureUI()
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
     //MARK: - Private methods
     private func configureUI() {
         configureStackView()
         configureSaveButton()
+        configureChooseButton()
+        configurePickerView()
     }
     
     private func configureStackView() {
@@ -134,6 +150,29 @@ class WishEventCreationViewController: UIViewController {
         saveButton.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .touchUpInside)
     }
     
+    private func configureChooseButton() {
+        view.addSubview(chooseButton)
+        chooseButton.setTitle("Choose from existing", for: .normal)
+        chooseButton.setTitleColor(.white, for: .normal)
+        chooseButton.pinTop(stackView.bottomAnchor, Constants.chooseButtonTop)
+        chooseButton.pinCentreX(view)
+        chooseButton.setHeight(Constants.saveButtonHeight)
+        chooseButton.setWidth(Constants.saveButtonWidth)
+        chooseButton.backgroundColor = .systemBlue
+        chooseButton.layer.cornerRadius = Constants.saveButtonCornerRadius
+        chooseButton.addTarget(self, action: #selector(showPicker), for: .touchUpInside)
+    }
+    
+    private func configurePickerView() {
+        view.addSubview(pickerView)
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        pickerView.isHidden = true
+        pickerView.backgroundColor = .white
+        pickerView.layer.cornerRadius = Constants.pickerCornerRadius
+        pickerView.pinCentre(view)
+    }
+    
     
     //MARK: - Objc methods
     @objc
@@ -159,7 +198,34 @@ class WishEventCreationViewController: UIViewController {
     }
     
     @objc
+    private func showPicker() {
+        pickerView.isHidden = false
+        view.bringSubviewToFront(pickerView)
+    }
+    
+    @objc
     private func dismissKeyboard() {
         view.endEditing(true)
+    }
+}
+
+extension WishEventCreationViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return Constants.pickerNumberOfComponents
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerData.indices.contains(row) {
+            titleField.text = pickerData[row]
+            pickerView.isHidden = true
+        }
     }
 }

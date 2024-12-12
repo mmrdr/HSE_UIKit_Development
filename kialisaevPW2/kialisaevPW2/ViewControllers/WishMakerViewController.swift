@@ -218,13 +218,16 @@ final class WishMakerViewController : UIViewController {
     
     @objc
     private func addWishButtonPressed(_ sender: UIButton) {
-        present(WishStoringViewController(), animated: true)
+        let wishStoringVC = WishStoringViewController()
+        wishStoringVC.backgoundColor = self.view.backgroundColor
+        present(wishStoringVC, animated: true)
     }
     
     // HW 4
     @objc
     private func scheduleWishesButtonPressed(_ sender: UIButton) {
         let wishCalendarVS = WishCalendarViewController()
+        wishCalendarVS.backgroundColor = self.view.backgroundColor
         navigationController?.pushViewController(wishCalendarVS, animated: true)
     }
 }

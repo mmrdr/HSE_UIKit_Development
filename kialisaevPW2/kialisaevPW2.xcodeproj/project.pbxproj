@@ -55,6 +55,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA867C0C2D0ACDD700AC3FBD /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				AA2531232CDA48320053E2A4 /* AddWishCell.swift */,
+				AA2531212CDA3DD90053E2A4 /* WrittenWishCell.swift */,
+				AA0A1C362CFF02A2004FE9B2 /* WishEventCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		AA867C0D2D0ACDEC00AC3FBD /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				AAD141342CD1350D0033A571 /* WishMakerViewController.swift */,
+				AA25311F2CDA2F3E0053E2A4 /* WishStoringViewController.swift */,
+				AA0A1C2E2CFEF46E004FE9B2 /* WishCalendarViewController.swift */,
+				AA867B022CFF15DE00AC3FBD /* WishEventCreationViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		AA867C0E2D0ACE0300AC3FBD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AAD1413B2CD144EE0033A571 /* UIColor + Random.swift */,
+				AAD1413F2CD18D4A0033A571 /* UIView + Pin.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		AAD141142CD132370033A571 = {
 			isa = PBXGroup;
 			children = (
@@ -74,19 +104,13 @@
 		AAD1411F2CD132380033A571 /* kialisaevPW2 */ = {
 			isa = PBXGroup;
 			children = (
+				AA867C0E2D0ACE0300AC3FBD /* Extensions */,
+				AA867C0D2D0ACDEC00AC3FBD /* ViewControllers */,
+				AA867C0C2D0ACDD700AC3FBD /* Cells */,
 				AAD141202CD132380033A571 /* AppDelegate.swift */,
 				AAD141222CD132380033A571 /* SceneDelegate.swift */,
-				AAD141342CD1350D0033A571 /* WishMakerViewController.swift */,
-				AA25311F2CDA2F3E0053E2A4 /* WishStoringViewController.swift */,
-				AA0A1C2E2CFEF46E004FE9B2 /* WishCalendarViewController.swift */,
-				AA867B022CFF15DE00AC3FBD /* WishEventCreationViewController.swift */,
 				AA0A1C382CFF0A86004FE9B2 /* CalendarEventManager.swift */,
 				AAD1413D2CD149F60033A571 /* CustomSlider.swift */,
-				AA2531232CDA48320053E2A4 /* AddWishCell.swift */,
-				AA2531212CDA3DD90053E2A4 /* WrittenWishCell.swift */,
-				AA0A1C362CFF02A2004FE9B2 /* WishEventCell.swift */,
-				AAD1413B2CD144EE0033A571 /* UIColor + Random.swift */,
-				AAD1413F2CD18D4A0033A571 /* UIView + Pin.swift */,
 				AAD141292CD1323A0033A571 /* Assets.xcassets */,
 				AAD1412B2CD1323A0033A571 /* LaunchScreen.storyboard */,
 				AAD1412E2CD1323A0033A571 /* Info.plist */,

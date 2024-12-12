@@ -26,17 +26,22 @@ class WishCalendarViewController: UIViewController, UICollectionViewDelegate, Wi
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var events: [CalendarEventModel] = []
     private let defaults = UserDefaults.standard
+    var backgroundColor: UIColor?
     
     //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = backgroundColor ?? .white
         let backButton = UIBarButtonItem(image: UIImage(systemName: Constants.backButtonSystemName), style: .plain, target: self, action: #selector(backButtonPressed(_:)))
         let plusButton = UIBarButtonItem(image: UIImage(systemName: Constants.plusButtonSystemName), style: .plain, target: self, action: #selector(plusButtonPressed(_:)))
         navigationItem.leftBarButtonItem = backButton
         navigationItem.rightBarButtonItem = plusButton
         loadWishes()
         configureCollectionView()
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     // Пожалуй, самое лютое решение в этом дз. Не разобрался в CoreData для сохранения events(да и wishes)
     // поэтому пришлось использовать userDefaults. Столкнулся с проблемой что UserDefaults может работать
@@ -99,6 +104,7 @@ class WishCalendarViewController: UIViewController, UICollectionViewDelegate, Wi
     private func plusButtonPressed(_ sender: UIButton) {
         let wishEventCreatingVC = WishEventCreationViewController()
         wishEventCreatingVC.delegate = self
+        wishEventCreatingVC.backgroundColor = self.view.backgroundColor
         present(wishEventCreatingVC, animated: true, completion: nil)
     }
 }

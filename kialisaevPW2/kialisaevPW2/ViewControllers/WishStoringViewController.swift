@@ -26,15 +26,25 @@ final class WishStoringViewController: UIViewController, UITableViewDelegate {
     
     // MARK: Fields
     private let table: UITableView = UITableView(frame: .zero)
-    private var wishArray: [String] = []
-    private let defaults = UserDefaults.standard
+    var wishArray: [String] = []
+    let defaults = UserDefaults.standard
+    var backgoundColor: UIColor?
+    static let shared = WishStoringViewController()
     
     // MARK: Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = backgoundColor ?? .red
         loadWishes()
         configureTable()
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    func getUserDefauts() -> [String] {
+        return UserDefaults.standard.stringArray(forKey: Constants.keyForSave)!
     }
     
     // MARK: Private methods
